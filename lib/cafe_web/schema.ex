@@ -2,6 +2,7 @@ defmodule CafeWeb.Schema do
   use Absinthe.Schema
   alias CafeWeb.Resolvers.OrderResolver
   alias Cafe.Orders.Product
+  alias Cafe.Orders.OrderItem
   alias Cafe.Orders.Order
   alias Cafe.Repo
 
@@ -14,9 +15,15 @@ defmodule CafeWeb.Schema do
       end)
     end
 
-    field :order, list_of(:order_item) do
+    field :order, list_of(:order) do
       resolve(fn _, _, _ ->
         {:ok, Order |> Repo.all() |> Repo.preload(:orderitems)}
+      end)
+    end
+
+    field :order_item, list_of(:order_item) do
+      resolve(fn _, _, _ ->
+        {:ok, Repo.all(OrderItem)}
       end)
     end
   end
@@ -47,17 +54,30 @@ defmodule CafeWeb.Schema do
       resolve(&OrderResolver.create_order/3)
     end
 
-    # @desc "update an order item"
-    # field :update_orderitem, :order_item do
-    #   arg(:id, non_null(:id))
-    #   arg(:item_update, non_null(:order_item_update))
-    #   resolve(&OrderResolver.update_order_item/3)
-    # end
+    @desc "update an order"
+    field :update_order, :order do
+      arg(:id, non_null(:id))
+      arg(:order_update, non_null(:order_update))
+      resolve(&OrderResolver.update_order/3)
+    end
 
-    # @desc "delete an order item"
-    # field :delete_orderitem, :order_item do
-    #   arg(:id, non_null(:id))
-    #   resolve(&OrderResolver.delete_order_item/3)
-    # end
+    @desc "update an order_item"
+    field :update_order_item, :order_item do
+      arg(:id, non_null(:id))
+      arg(:item_update, non_null(:item_update))
+      resolve(&OrderResolver.update_order_item/3)
+    end
+
+    @desc "delete an order" 
+    field :delete_order, :order do
+      arg(:id, non_null(:id))
+      resolve(&OrderResolver.delete_order/3)
+    end
+
+    @desc "delete an order item"
+    field :delete_orderitem, :order_item do
+      arg(:id, non_null(:id))
+      resolve(&OrderResolver.delete_order_item/3)
+    end
   end
 end

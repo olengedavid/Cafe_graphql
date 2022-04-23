@@ -22,11 +22,9 @@ defmodule CafeWeb.Schema.OrderTypes do
     field :description, :string
   end
 
-  # order  types
+
   object :order_item do
     field :id, :id
-    field :name, :string
-    field :description, :string
     field :product, list_of(:product)
     field :order, list_of(:order)
   end
@@ -39,8 +37,8 @@ defmodule CafeWeb.Schema.OrderTypes do
   end
 
   input_object :order_item_input do
-    field :name, non_null(:string)
     field :product_id, non_null(:id)
+    field :order_id, :id
   end
 
   input_object :order_input do
@@ -49,13 +47,13 @@ defmodule CafeWeb.Schema.OrderTypes do
     field :orderitems, list_of(:order_item_input)
   end
 
-  # input_object :order_item_input do
-  #   field :name, non_null(:string)
-  #   field :description, :string
-  # end
+  input_object :item_update do
+    field :product_id, :id
+    field :order_id, :id
+  end
 
-  # input_object :order_item_update do
-  #   field :name, :string
-  #   field :description, :string
-  # end
+  input_object :order_update do
+    field :name, :string
+    field :description, :string
+  end
 end

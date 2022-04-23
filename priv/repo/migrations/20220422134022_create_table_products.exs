@@ -18,13 +18,10 @@ defmodule Cafe.Repo.Migrations.CreateTableProducts do
     end
 
     create table(:orderitems) do
-      add :name, :string
-      add :description, :string
       add :product_id, references(:products), null: false
-      add :order_id, references(:orders), null: false
+      add :order_id, references(:orders, on_delete: :delete_all), null: false
 
       timestamps()
     end
-
   end
 end

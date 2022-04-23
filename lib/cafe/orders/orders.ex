@@ -29,9 +29,14 @@ defmodule Cafe.Orders do
   # order 
   def create_order(attrs \\ %{}) do
     IO.inspect(attrs)
+
     %Order{}
     |> Order.changeset(attrs)
     |> Repo.insert()
+  end
+
+  def get_order(id) do
+    Repo.get!(Order, id)
   end
 
   def get_item(id) do
@@ -42,6 +47,16 @@ defmodule Cafe.Orders do
     item
     |> OrderItem.changeset(attrs)
     |> Repo.update()
+  end
+
+  def update_order(%Order{} = order, attrs) do
+    order
+    |> Order.changeset(attrs)
+    |> Repo.update()
+  end
+
+  def delete_order(%Order{} = order) do
+    Repo.delete(order)
   end
 
   def delete_order_item(%OrderItem{} = item) do

@@ -46,12 +46,24 @@ defmodule CafeWeb.Resolvers.OrderResolver do
     end
   end
 
+  def update_order(_root, %{id: id, order_update: attrs}, _info) do
+    order = Orders.get_order(id)
+
+    case Orders.update_order(order, attrs) do
+      {:ok, order} ->
+        {:ok, order}
+
+      _error ->
+        {:error, "sorry could not update the order"}
+    end
+  end
+
   def update_order_item(_root, %{id: id, item_update: attrs}, _info) do
     item = Orders.get_item(id)
 
     case Orders.update_order_item(item, attrs) do
-      {:ok, order_item} ->
-        {:ok, order_item}
+      {:ok, item} ->
+        {:ok, item}
 
       _error ->
         {:error, "sorry could not update the item"}
@@ -67,6 +79,16 @@ defmodule CafeWeb.Resolvers.OrderResolver do
 
       _error ->
         {:error, "sorry could not delete item"}
+    end
+  end
+
+  def delete_order(_root, %{id: id}, _) do
+    order = Orders.get_order(id)
+    case Orders.delete_order(order) do
+      {:ok, order} ->
+        {:ok, order}
+      _error ->
+        {:error, "sorry could not delete order"}
     end
   end
 

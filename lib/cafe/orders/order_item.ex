@@ -7,9 +7,6 @@ defmodule Cafe.Orders.OrderItem do
   alias Cafe.Orders.Order
 
   schema "orderitems" do
-    field :name, :string
-    field :description, :string
-
     belongs_to :product, Product
     belongs_to :order, Order
 
@@ -18,8 +15,7 @@ defmodule Cafe.Orders.OrderItem do
 
   def changeset(struct, attrs \\ %{}) do
     struct
-    |> cast(attrs, [:name, :description, :product_id, :order_id])
-    |> IO.inspect(label: "<<<<<")
-    |> validate_required([:name])
+    |> cast(attrs, [:product_id, :order_id])
+    |> validate_required([:product_id])
   end
 end
