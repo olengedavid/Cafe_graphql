@@ -4,7 +4,6 @@ defmodule Cafe.Orders.Product do
   use Ecto.Schema
   import Ecto.Changeset
 
-  alias Cafe.Repo
   alias Cafe.Orders.OrderItem
 
   schema "products" do
@@ -12,7 +11,9 @@ defmodule Cafe.Orders.Product do
     field :description, :string
     field :price, :float
 
-    belongs_to :orderitem, OrderItem
+    has_many :orderitems, OrderItem
+
+    timestamps()
   end
 
   def changeset(struct, attrs \\ %{}) do
