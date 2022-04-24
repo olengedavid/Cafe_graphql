@@ -26,12 +26,10 @@ defmodule CafeWeb.Schema.OrderTypes do
 
   object :order_item do
     field :id, :id
-
-    field :product, list_of(:product) do
+    field :product, :product do
       resolve(dataloader(Repo))
     end
-
-    field :order, list_of(:order) do
+    field :order, :order do
       resolve(dataloader(Repo))
     end
   end

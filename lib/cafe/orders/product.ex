@@ -12,7 +12,7 @@ defmodule Cafe.Orders.Product do
     field :price, :float
 
     has_many :orderitems, OrderItem
-
+    
     timestamps()
   end
 

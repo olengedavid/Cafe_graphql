@@ -1,9 +1,6 @@
 defmodule CafeWeb.Schema do
   use Absinthe.Schema
   alias CafeWeb.Resolvers.OrderResolver
-  alias Cafe.Orders.Product
-  alias Cafe.Orders.OrderItem
-  alias Cafe.Orders.Order
   alias Cafe.Repo
 
   import_types(__MODULE__.OrderTypes)
