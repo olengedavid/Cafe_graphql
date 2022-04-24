@@ -1,5 +1,7 @@
 defmodule CafeWeb.Schema.OrderTypes do
   use Absinthe.Schema.Notation
+  alias Cafe.Repo
+  import Absinthe.Resolution.Helpers, only: [dataloader: 1]
 
   input_object :order_product_input do
     field :name, non_null(:string)
@@ -22,18 +24,26 @@ defmodule CafeWeb.Schema.OrderTypes do
     field :description, :string
   end
 
-
   object :order_item do
     field :id, :id
-    field :product, list_of(:product)
-    field :order, list_of(:order)
+
+    field :product, list_of(:product) do
+      resolve(dataloader(Repo))
+    end
+
+    field :order, list_of(:order) do
+      resolve(dataloader(Repo))
+    end
   end
 
   object :order do
     field :id, :id
     field :name, :string
     field :description, :string
-    field :orderitems, list_of(:order_item)
+
+    field :orderitems, list_of(:order_item) do
+      resolve(dataloader(Repo))
+    end
   end
 
   input_object :order_item_input do

@@ -48,7 +48,8 @@ defmodule Cafe.MixProject do
       {:absinthe_plug, "~> 1.5"},
       {:absinthe, "~> 1.7"},
       {:absinthe_phoenix, "~> 2.0"},
-      {:poison, "~> 5.0"}
+      {:poison, "~> 5.0"},
+      {:dataloader, "~> 1.0.0"}
     ]
   end
 

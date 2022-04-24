@@ -84,18 +84,25 @@ defmodule CafeWeb.Resolvers.OrderResolver do
 
   def delete_order(_root, %{id: id}, _) do
     order = Orders.get_order(id)
+
     case Orders.delete_order(order) do
       {:ok, order} ->
         {:ok, order}
+
       _error ->
         {:error, "sorry could not delete order"}
     end
   end
 
-  #   def list_products(args) do
-  #     args
-  #     |> Enum.reduce()
+  def list_products(_args, _conn) do
+    {:ok, Orders.list_products()}
+  end
 
-  #     Orders.list_products()
-  #   end
+  def list_orders(_args, _conn) do
+    {:ok, Orders.list_orders()}
+  end
+
+  def list_order_items(_args, _conn) do
+    {:ok, Orders.list_order_items()}
+  end
 end

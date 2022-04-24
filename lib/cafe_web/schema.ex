@@ -8,23 +8,31 @@ defmodule CafeWeb.Schema do
 
   import_types(__MODULE__.OrderTypes)
 
+  def context(ctx) do
+    source = Dataloader.Ecto.new(Repo)
+
+    loader =
+      Dataloader.new()
+      |> Dataloader.add_source(Repo, source)
+
+    Map.put(ctx, :loader, loader)
+  end
+
+  def plugins do
+    [Absinthe.Middleware.Dataloader] ++ Absinthe.Plugin.defaults()
+  end
+
   query do
-    field :products, list_of(:product) do
-      resolve(fn _, _, _ ->
-        {:ok, Repo.all(Product)}
-      end)
+    field :propducts, list_of(:product) do
+      resolve(&OrderResolver.list_products/2)
     end
 
     field :order, list_of(:order) do
-      resolve(fn _, _, _ ->
-        {:ok, Order |> Repo.all() |> Repo.preload(:orderitems)}
-      end)
+      resolve(&OrderResolver.list_orders/2)
     end
 
     field :order_item, list_of(:order_item) do
-      resolve(fn _, _, _ ->
-        {:ok, Repo.all(OrderItem)}
-      end)
+      resolve(&OrderResolver.list_order_items/2)
     end
   end
 
@@ -68,7 +76,7 @@ defmodule CafeWeb.Schema do
       resolve(&OrderResolver.update_order_item/3)
     end
 
-    @desc "delete an order" 
+    @desc "delete an order"
     field :delete_order, :order do
       arg(:id, non_null(:id))
       resolve(&OrderResolver.delete_order/3)

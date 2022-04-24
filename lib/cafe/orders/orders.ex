@@ -26,7 +26,6 @@ defmodule Cafe.Orders do
     |> Repo.update()
   end
 
-  # order 
   def create_order(attrs \\ %{}) do
     IO.inspect(attrs)
 
@@ -61,5 +60,17 @@ defmodule Cafe.Orders do
 
   def delete_order_item(%OrderItem{} = item) do
     Repo.delete(item)
+  end
+
+  def list_orders do
+    Repo.all(Order)
+  end
+
+  def list_products do
+    Repo.all(Product)
+  end
+
+  def list_order_items do
+    Repo.all(OrderItem)
   end
 end
